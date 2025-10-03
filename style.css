@@ -101,6 +101,13 @@ section {
   cursor: pointer;
 }
 
+.button-group {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2列表示 */
+  gap: 12px;
+  padding: 0 20px;
+}
+
 /* モーダル */
 .modal {
   display: none;
