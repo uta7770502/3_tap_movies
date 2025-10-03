@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>映画検索 MVP</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #fff;
+      color: #333;
+    }
+
+    header {
+      background: linear-gradient(135deg, #ff7e5f, #feb47b);
+      padding: 20px;
+      text-align: center;
+      color: white;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    input[type="text"] {
+      width: 70%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin-left: 10px;
+      background: linear-gradient(135deg, #ff7e5f, #feb47b);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    .movie {
+      display: flex;
+      align-items: flex-start;
+      border-bottom: 1px solid #eee;
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+    }
+
+    .movie img {
+      width: 100px;
+      border-radius: 8px;
+      margin-right: 15px;
+    }
+
+    .movie h2 {
+      margin: 0;
+      font-size: 18px;
+      color: #ff7e5f;
+    }
+
+    .movie p {
+      font-size: 14px;
+      color: #666;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      margin-top: 30px;
+      background: #f8f8f8;
+      font-size: 12px;
+    }
+
+    footer img {
+      vertical-align: middle;
+      width: 80px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎬 映画検索 MVP</h1>
+  </header>
+
+  <div class="container">
+    <input id="searchInput" type="text" placeholder="映画タイトルや俳優名で検索">
+    <button onclick="searchMovies()">検索</button>
+    <button onclick="showFavorites()">⭐ お気に入りリスト</button>
+
+    <div id="results"></div>
+  </div>
+
+  <footer>
+    <p>This product uses the TMDb API but is not endorsed or certified by TMDb.</p>
+    <a href="https://www.themoviedb.org/" target="_blank">
+      <img src="tmdb.png" alt="TMDb Logo">
+    </a>
+  </footer>
+
+  <script>
+    const API_KEY = "YOUR_API_KEY_HERE"; // ←あなたのAPIキーに置き換え
+
+    let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+    async function searchMovies() {
+      const query = document.getElementById("searchInput").value;
+      if (!query) {
+        alert("検索ワードを入力してください");
+        return;
+      }
+      const url = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}&language=ja`;
+      const res = await fetch(url);
+      const data = await res.json();
+      displayMovies(data.results);
+    }
+
+    function displayMovies(movies) {
+      const resultsDiv = document.getElementById("results");
+      resultsDiv.innerHTML = "";
+      if (!movies.length) {
+        resultsDiv.innerHTML = "<p>該当する映画が見つかりません。</p>";
+        return;
+      }
+
+      movies.forEach(movie => {
+        const div = document.createElement("div");
+        div.className = "movie";
+        const poster = movie.poster_path
+          ? `https://image.tmdb.org/t/p/w200${movie.poster_path}`
+          : "https://via.placeholder.com/100x150?text=No+Image";
+        div.innerHTML = `
+          <img src="${poster}" alt="${movie.title}">
+          <div>
+            <h2>${movie.title} (${movie.release_date ? movie.release_date.substring(0, 4) : "年不明"})</h2>
+            <p>${movie.overview ? movie.overview.substring(0, 100) + "..." : "概要なし"}</p>
+            <button onclick="addFavorite(${movie.id}, '${movie.title}')">⭐ お気に入りに追加</button>
+          </div>
+        `;
+        resultsDiv.appendChild(div);
+      });
+    }
+
+    function addFavorite(id, title) {
+      if (favorites.find(f => f.id === id)) {
+        alert("すでにお気に入りに入っています");
+        return;
+      }
+      favorites.push({ id, title });
+      localStorage.setItem("favorites", JSON.stringify(favorites));
+      alert(`${title} をお気に入りに追加しました！`);
+    }
+
+    function showFavorites() {
+      const resultsDiv = document.getElementById("results");
+      resultsDiv.innerHTML = "<h2>お気に入りリスト</h2>";
+      if (!favorites.length) {
+        resultsDiv.innerHTML += "<p>お気に入りがまだありません。</p>";
+        return;
+      }
+      favorites.forEach(movie => {
+        const div = document.createElement("div");
+        div.className = "movie";
+        div.innerHTML = `
+          <div>
+            <h2>${movie.title}</h2>
+          </div>
+        `;
+        resultsDiv.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>
