@@ -2,78 +2,175 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>🎬 3タップムービー</title>
   <style>
     body {
-      font-family: sans-serif;
+      font-family: "Arial", sans-serif;
       margin: 0;
       padding: 0;
       text-align: center;
+      background: #fff;
     }
     h1 {
       margin: 20px 0;
     }
-    input {
-      width: 90%;
+    input[type="text"] {
+      width: 80%;
+      max-width: 400px;
       padding: 12px;
-      margin: 10px auto;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      display: block;
       font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-bottom: 10px;
     }
-    .btn {
+    .big-btn {
       display: block;
       width: 95%;
-      max-width: 600px;
+      max-width: 500px;
       margin: 12px auto;
       padding: 20px;
       font-size: 20px;
       font-weight: bold;
-      color: white;
-      background: linear-gradient(45deg, #ff7e5f, #feb47b);
-      border: none;
       border-radius: 15px;
+      background: linear-gradient(45deg, #ff7e5f, #feb47b);
+      color: white;
+      border: none;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
       cursor: pointer;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      transition: transform 0.1s ease-in-out;
+    }
+    .big-btn:hover {
+      transform: scale(1.02);
     }
     section {
       margin: 30px 0;
     }
+    #results img {
+      width: 100px;
+      border-radius: 8px;
+      display: block;
+      margin: 5px auto;
+    }
+    #results div {
+      margin: 15px auto;
+      padding: 10px;
+      max-width: 400px;
+      border-bottom: 1px solid #ddd;
+    }
   </style>
 </head>
 <body>
+
   <h1>🎬 3タップムービー</h1>
-  <input type="text" placeholder="映画タイトルや俳優名で検索">
-  <button class="btn">検索</button>
-  <button class="btn">⭐ お気に入りリスト</button>
+
+  <!-- 検索フォーム -->
+  <form id="searchForm">
+    <input type="text" id="searchInput" placeholder="映画タイトルや俳優名で検索">
+    <button type="submit" class="big-btn">検索</button>
+  </form>
+
+  <!-- お気に入りリスト -->
+  <button class="big-btn" onclick="showFavorites()">⭐ お気に入りリスト</button>
 
   <section>
     <h2>🎭 ジャンルから探す</h2>
-    <button class="btn">💥 アクション</button>
-    <button class="btn">😂 コメディ</button>
-    <button class="btn">💖 恋愛</button>
-    <button class="btn">🎨 アニメ</button>
+    <button class="big-btn" onclick="searchByGenre(28)">💥 アクション</button>
+    <button class="big-btn" onclick="searchByGenre(35)">😂 コメディ</button>
+    <button class="big-btn" onclick="searchByGenre(10749)">💖 恋愛</button>
+    <button class="big-btn" onclick="searchByGenre(16)">🎨 アニメ</button>
   </section>
 
   <section>
     <h2>😊 気分で探す</h2>
-    <button class="btn">😭 泣きたい</button>
-    <button class="btn">🤣 笑いたい</button>
-    <button class="btn">😱 ドキドキ</button>
-    <button class="btn">🤩 ワクワク</button>
+    <button class="big-btn" onclick="searchByMood('drama')">😭 泣きたい</button>
+    <button class="big-btn" onclick="searchByMood('comedy')">🤣 笑いたい</button>
+    <button class="big-btn" onclick="searchByMood('thriller')">😱 ドキドキ</button>
+    <button class="big-btn" onclick="searchByMood('adventure')">🤩 ワクワク</button>
   </section>
 
   <section>
     <h2>🔥 今週の人気映画</h2>
-    <button class="btn">ランキングを見る</button>
+    <button class="big-btn" onclick="showTrending()">ランキングを見る</button>
   </section>
 
-  <footer>
+  <section>
     <h2>🔍 検索結果 / お気に入り</h2>
-    <p style="font-size: 12px; color: #555;">
-      This product uses the TMDb API but is not endorsed or certified by TMDb.
-    </p>
+    <div id="results"></div>
+  </section>
+
+  <footer style="margin: 30px; font-size: 12px; color: #666;">
+    This product uses the TMDb API but is not endorsed or certified by TMDb.
   </footer>
+
+  <script>
+    const API_KEY = "YOUR_TMDB_API_KEY"; // ← 自分のAPIキーを入れてください
+
+    // 検索フォーム送信イベント
+    document.getElementById("searchForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      const query = document.getElementById("searchInput").value.trim();
+      if (query) searchMovies(query);
+    });
+
+    // 映画検索
+    function searchMovies(query) {
+      fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=ja&query=${encodeURIComponent(query)}`)
+        .then(res => res.json())
+        .then(data => displayResults(data.results))
+        .catch(err => console.error(err));
+    }
+
+    // ジャンル検索
+    function searchByGenre(genreId) {
+      fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=ja&with_genres=${genreId}`)
+        .then(res => res.json())
+        .then(data => displayResults(data.results))
+        .catch(err => console.error(err));
+    }
+
+    // 気分検索
+    function searchByMood(mood) {
+      let genreId = 18; // デフォルト:ドラマ
+      if (mood === "comedy") genreId = 35;
+      if (mood === "thriller") genreId = 53;
+      if (mood === "adventure") genreId = 12;
+      searchByGenre(genreId);
+    }
+
+    // 人気映画
+    function showTrending() {
+      fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${API_KEY}&language=ja`)
+        .then(res => res.json())
+        .then(data => displayResults(data.results))
+        .catch(err => console.error(err));
+    }
+
+    // 結果表示
+    function displayResults(movies) {
+      const results = document.getElementById("results");
+      results.innerHTML = "";
+      if (!movies || movies.length === 0) {
+        results.innerHTML = "<p>該当する映画が見つかりませんでした。</p>";
+        return;
+      }
+      movies.forEach(movie => {
+        const div = document.createElement("div");
+        const poster = movie.poster_path ? 
+          `https://image.tmdb.org/t/p/w200${movie.poster_path}` :
+          "https://via.placeholder.com/100x150?text=No+Image";
+        div.innerHTML = `
+          <img src="${poster}" alt="${movie.title}">
+          <strong>${movie.title}</strong> (${movie.release_date ? movie.release_date.substring(0,4) : "N/A"})
+        `;
+        results.appendChild(div);
+      });
+    }
+
+    // お気に入り（仮）
+    function showFavorites() {
+      alert("お気に入りリスト機能は準備中です！");
+    }
+  </script>
 </body>
 </html>
