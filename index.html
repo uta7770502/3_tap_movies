@@ -136,14 +136,15 @@
 
     // 映画検索
     function searchMovies(query) {
-      fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=ja&query=${encodeURIComponent(query)}`)
-        .then(res => res.json())
-        .then(data => {
-          logDebug("検索成功: " + (data.results ? data.results.length : 0) + "件ヒット");
-          displayResults(data.results);
-        })
-        .catch(err => logDebug("検索エラー: " + err));
-    }
+  const API_KEY = "YOUR_API_KEY"; // ←ここに本物のキーを
+  fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=ja&query=${encodeURIComponent(query)}`)
+    .then(res => res.json())
+    .then(data => {
+      logDebug("検索成功: " + (data.results ? data.results.length : 0) + "件ヒット");
+      displayResults(data.results);
+    })
+    .catch(err => logDebug("検索エラー: " + err));
+}
 
     // ジャンル検索
     function searchByGenre(genreId) {
