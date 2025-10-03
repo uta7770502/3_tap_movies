@@ -2,369 +2,79 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>映画検索＋お気に入り</title>
+  <title>3タップムービー</title>
   <style>
     body {
       font-family: sans-serif;
       margin: 0;
-      background-color: #fafafa;
+      padding: 0;
+      background: #fff;
     }
-
-    /* ヘッダー */
-    header {
-      background: linear-gradient(90deg, #ff7e5f, #feb47b);
-      padding: 15px;
+    h1 {
+      font-size: 28px;
+      font-weight: bold;
+      margin: 20px 0;
+      color: #333;
       text-align: center;
-      color: white;
-      font-size: 20px;
+    }
+    /* ボタン全般 */
+    button, .btn {
+      font-size: 18px;
+      padding: 14px 24px;
+      border-radius: 10px;
+      margin: 8px;
+      cursor: pointer;
+      border: none;
+    }
+    /* 検索ボタン */
+    .search-button {
+      background: linear-gradient(45deg, #ff7e5f, #feb47b);
+      color: #fff;
       font-weight: bold;
     }
-
-    /* ヒーローバナー */
-    .hero {
-      position: relative;
-      height: 300px;
-      background-size: cover;
-      background-position: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .hero-overlay {
-      background: rgba(0,0,0,0.5);
-      color: white;
-      text-align: center;
-      padding: 20px;
-      border-radius: 10px;
-    }
-
-    .hero-overlay h1 {
-      margin: 0;
-      font-size: 24px;
-    }
-
-    .search-container-hero {
-      margin-top: 15px;
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-    }
-
-    .search-container-hero input {
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-      width: 250px;
-    }
-
-    .search-container-hero button {
-      background: linear-gradient(90deg, #ff7e5f, #feb47b);
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 8px;
-      font-size: 14px;
-      cursor: pointer;
-      transition: opacity 0.3s;
-    }
-
-    .search-container-hero button:hover {
-      opacity: 0.8;
-    }
-
-    /* 検索エリア */
-    .search-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      margin: 20px auto;
-      max-width: 90%;
-    }
-
-    #searchInput {
-      flex: 1;
-      padding: 12px;
+    /* ジャンル・気分ボタン */
+    .genre-btn, .mood-btn {
       font-size: 16px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      outline: none;
-    }
-
-    button {
-      background: linear-gradient(90deg, #ff7e5f, #feb47b);
-      color: white;
+      padding: 12px 20px;
+      margin: 6px;
+      background: linear-gradient(45deg, #ff9966, #ff5e62);
+      color: #fff;
       border: none;
-      padding: 10px 16px;
-      border-radius: 8px;
-      font-size: 14px;
-      cursor: pointer;
-      transition: opacity 0.3s;
-    }
-
-    button:hover {
-      opacity: 0.8;
-    }
-
-    /* 結果表示カード */
-    .movie {
-      border: 1px solid #ddd;
       border-radius: 12px;
-      padding: 12px;
-      margin: 15px auto;
-      max-width: 600px;
-      background: #fff;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      display: flex;
-      gap: 15px;
     }
-
-    .movie img {
-      width: 100px;
-      border-radius: 8px;
+    /* セクション */
+    h2 {
+      margin-top: 30px;
+      color: #333;
     }
-
-    .movie div {
-      flex: 1;
-    }
-
-    footer {
-      margin: 30px;
+    .section {
       text-align: center;
-      font-size: 12px;
-      color: #666;
-    }
-
-    .genre-buttons button, .mood-buttons button {
-      margin: 5px;
-    }
-
-    /* レスポンシブ対応 */
-    @media (max-width: 600px) {
-      .search-container, .search-container-hero {
-        flex-direction: column;
-        gap: 8px;
-      }
-      .search-container input, .search-container-hero input {
-        width: 100%;
-      }
-      .movie {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-      }
-      .movie img {
-        width: 80%;
-        max-width: 200px;
-      }
-      .genre-buttons, .mood-buttons {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-      .genre-buttons button, .mood-buttons button {
-        flex: 1 1 45%;
-        margin: 5px;
-      }
+      margin: 20px 0;
     }
   </style>
 </head>
 <body>
-  <header>🎬 映画検索 MVP</header>
-
-  <div class="hero">
-    <div class="hero-overlay">
-      <h1>あなたにぴったりの映画を探そう 🎬</h1>
-      <div class="search-container-hero">
-        <input id="searchInputHero" type="text" placeholder="映画タイトルや俳優名で検索">
-        <button onclick="searchMoviesFromHero()">検索</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="search-container">
+  <h1>🎬 3タップムービー</h1>
+  <div class="section">
     <input id="searchInput" type="text" placeholder="映画タイトルや俳優名で検索">
-    <button onclick="searchMovies()">検索</button>
-    <button onclick="showFavorites()">❤️ お気に入りリスト</button>
+    <button class="search-button" onclick="searchMovies()">検索</button>
+    <button class="btn" onclick="showFavorites()">⭐ お気に入りリスト</button>
   </div>
 
-  <h2 style="text-align:center; margin-top:30px;">🎭 ジャンルから探す</h2>
-  <div class="genre-buttons" style="text-align:center; margin-bottom:20px;">
-    <button onclick="searchByGenre(28)">💥 アクション</button>
-    <button onclick="searchByGenre(35)">😂 コメディ</button>
-    <button onclick="searchByGenre(10749)">💖 恋愛</button>
-    <button onclick="searchByGenre(16)">🎨 アニメ</button>
+  <div class="section">
+    <h2>🎭 ジャンルから探す</h2>
+    <button class="genre-btn">💥 アクション</button>
+    <button class="genre-btn">😂 コメディ</button>
+    <button class="genre-btn">💖 恋愛</button>
+    <button class="genre-btn">🎨 アニメ</button>
   </div>
 
-  <h2 style="text-align:center; margin-top:30px;">😊 気分で探す</h2>
-  <div class="mood-buttons" style="text-align:center; margin-bottom:20px;">
-    <button onclick="searchByMood('泣きたい')">😭 泣きたい</button>
-    <button onclick="searchByMood('笑いたい')">😂 笑いたい</button>
-    <button onclick="searchByMood('ドキドキ')">😱 ドキドキ</button>
-    <button onclick="searchByMood('ワクワク')">🤩 ワクワク</button>
+  <div class="section">
+    <h2>😊 気分で探す</h2>
+    <button class="mood-btn">😭 泣きたい</button>
+    <button class="mood-btn">🤣 笑いたい</button>
+    <button class="mood-btn">😱 ドキドキ</button>
+    <button class="mood-btn">🤩 ワクワク</button>
   </div>
-
-  <h2 style="text-align:center; margin-top:30px;">🔥 今週の人気映画</h2>
-  <div id="trending"></div>
-
-  <h2 style="text-align:center; margin-top:30px;">🔍 検索結果 / お気に入り</h2>
-  <div id="results"></div>
-
-  <footer>
-    <p>This product uses the TMDb API but is not endorsed or certified by TMDb.</p>
-  </footer>
-
-  <script>
-    const API_KEY = "あなたのAPIキー";
-    let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-
-    async function searchMovies() {
-      const query = document.getElementById("searchInput").value;
-      if (!query) {
-        alert("検索ワードを入力してください");
-        return;
-      }
-      const url = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=ja&query=${encodeURIComponent(query)}`;
-      const res = await fetch(url);
-      const data = await res.json();
-      displayMovies(data.results);
-    }
-
-    function displayMovies(movies) {
-      const resultsDiv = document.getElementById("results");
-      resultsDiv.innerHTML = "";
-
-      if (movies.length === 0) {
-        resultsDiv.innerHTML = "<p>検索結果がありません。</p>";
-        return;
-      }
-
-      movies.forEach(movie => {
-        const div = document.createElement("div");
-        div.className = "movie";
-        const poster = movie.poster_path
-          ? `https://image.tmdb.org/t/p/w200${movie.poster_path}`
-          : "https://via.placeholder.com/100x150?text=No+Image";
-        div.innerHTML = `
-          <img src="${poster}" alt="${movie.title}">
-          <div>
-            <h3>${movie.title} (${movie.release_date ? movie.release_date.substring(0,4) : "年不明"})</h3>
-            <p>${movie.overview ? movie.overview.substring(0, 80) + "..." : "説明なし"}</p>
-            <button onclick="addFavorite(${movie.id}, '${movie.title}')">お気に入りに追加</button>
-            <button onclick="removeFavorite(${movie.id})">削除</button>
-          </div>
-        `;
-        resultsDiv.appendChild(div);
-      });
-    }
-
-    function addFavorite(id, title) {
-      if (!favorites.find(f => f.id === id)) {
-        favorites.push({ id, title });
-        localStorage.setItem("favorites", JSON.stringify(favorites));
-        alert(`${title} をお気に入りに追加しました！`);
-      } else {
-        alert("すでにお気に入りに入っています");
-      }
-    }
-
-    async function showFavorites() {
-      if (favorites.length === 0) {
-        document.getElementById("results").innerHTML = "<p>お気に入りがまだありません。</p>";
-        return;
-      }
-
-      const movieDetails = [];
-      for (const fav of favorites) {
-        const url = `https://api.themoviedb.org/3/movie/${fav.id}?api_key=${API_KEY}&language=ja`;
-        const res = await fetch(url);
-        const data = await res.json();
-        movieDetails.push(data);
-      }
-
-      displayMovies(movieDetails);
-    }
-
-    function removeFavorite(id) {
-      favorites = favorites.filter(f => f.id !== id);
-      localStorage.setItem("favorites", JSON.stringify(favorites));
-      showFavorites();
-    }
-
-    async function loadTrending() {
-      const url = `https://api.themoviedb.org/3/trending/movie/week?api_key=${API_KEY}&language=ja`;
-      const res = await fetch(url);
-      const data = await res.json();
-      displayTrending(data.results);
-    }
-
-    function displayTrending(movies) {
-      const trendingDiv = document.getElementById("trending");
-      trendingDiv.innerHTML = "";
-      movies.slice(0, 5).forEach(movie => {
-        const div = document.createElement("div");
-        div.className = "movie";
-        const poster = movie.poster_path
-          ? `https://image.tmdb.org/t/p/w200${movie.poster_path}`
-          : "https://via.placeholder.com/100x150?text=No+Image";
-        div.innerHTML = `
-          <img src="${poster}" alt="${movie.title}">
-          <div>
-            <h3>${movie.title} (${movie.release_date ? movie.release_date.substring(0,4) : "年不明"})</h3>
-            <p>${movie.overview ? movie.overview.substring(0, 80) + "..." : "説明なし"}</p>
-            <button onclick="addFavorite(${movie.id}, '${movie.title}')">お気に入りに追加</button>
-          </div>
-        `;
-        trendingDiv.appendChild(div);
-      });
-    }
-
-    async function searchByGenre(genreId) {
-      const url = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=${genreId}&language=ja&sort_by=popularity.desc`;
-      const res = await fetch(url);
-      const data = await res.json();
-      displayMovies(data.results);
-    }
-
-    async function searchByMood(mood) {
-      const url = `https://api.themoviedb.org/3/search/keyword?api_key=${API_KEY}&query=${encodeURIComponent(mood)}`;
-      const res = await fetch(url);
-      const data = await res.json();
-      if (data.results.length > 0) {
-        const keywordId = data.results[0].id;
-        const movieUrl = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_keywords=${keywordId}&language=ja&sort_by=popularity.desc`;
-        const movieRes = await fetch(movieUrl);
-        const movieData = await movieRes.json();
-        displayMovies(movieData.results);
-      } else {
-        document.getElementById("results").innerHTML = `<p>${mood} 気分の映画は見つかりませんでした。</p>`;
-      }
-    }
-
-    async function loadHeroBackground() {
-      const url = `https://api.themoviedb.org/3/trending/movie/week?api_key=${API_KEY}&language=ja`;
-      const res = await fetch(url);
-      const data = await res.json();
-      if (data.results.length > 0) {
-        const randomMovie = data.results[Math.floor(Math.random() * data.results.length)];
-        if (randomMovie.backdrop_path) {
-          document.querySelector(".hero").style.backgroundImage =
-            `url(https://image.tmdb.org/t/p/original${randomMovie.backdrop_path})`;
-        }
-      }
-    }
-
-    function searchMoviesFromHero() {
-      const query = document.getElementById("searchInputHero").value;
-      document.getElementById("searchInput").value = query;
-      searchMovies();
-    }
-
-    window.onload = () => {
-      loadHeroBackground();
-      loadTrending();
-    };
-  </script>
 </body>
 </html>
