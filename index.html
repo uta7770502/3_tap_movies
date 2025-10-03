@@ -4,133 +4,54 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>🎬 3タップムービー</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      text-align: center;
-      background: #fff;
-    }
-    h1 {
-      margin: 20px 0;
-    }
-    .search-box {
-      margin: 20px auto;
-      padding: 10px;
-      max-width: 90%;
-    }
-    input[type="text"] {
-      width: 80%;
-      padding: 12px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-    }
-    .big-btn {
-      display: block;
-      width: 95%;
-      max-width: 500px;
-      margin: 12px auto;
-      padding: 20px;
-      font-size: 20px;
-      font-weight: bold;
-      border-radius: 15px;
-      background: linear-gradient(45deg, #ff7e5f, #feb47b);
-      color: white;
-      border: none;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      cursor: pointer;
-      transition: transform 0.1s ease;
-    }
-    .big-btn:hover {
-      transform: scale(1.02);
-    }
-    #results {
-      margin: 20px;
-    }
-    #results img {
-      width: 100px;
-      border-radius: 8px;
-      display: block;
-      margin: 10px auto;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>🎬 3タップムービー</h1>
-  <form id="searchForm" class="search-box">
-    <input type="text" id="searchInput" placeholder="映画タイトルや俳優名で検索">
-    <button type="submit" class="big-btn">検索</button>
-  </form>
-  <button class="big-btn">⭐ お気に入りリスト</button>
+  <header>
+    <h1>🎬 3タップムービー</h1>
+    <form id="searchForm">
+      <input type="text" id="searchInput" placeholder="映画タイトルや俳優名で検索">
+      <button type="submit" class="big-btn">検索</button>
+    </form>
+    <button class="big-btn" onclick="showFavorites()">⭐ お気に入りリスト</button>
+  </header>
 
-  <h2>🎭 ジャンルから探す</h2>
-  <button class="big-btn">💥 アクション</button>
-  <button class="big-btn">😂 コメディ</button>
-  <button class="big-btn">💖 恋愛</button>
-  <button class="big-btn">🎨 アニメ</button>
+  <main>
+    <section>
+      <h2>🎭 ジャンルから探す</h2>
+      <div class="button-group">
+        <button class="big-btn" onclick="searchByGenre(28)">💥 アクション</button>
+        <button class="big-btn" onclick="searchByGenre(35)">😂 コメディ</button>
+        <button class="big-btn" onclick="searchByGenre(10749)">💖 恋愛</button>
+        <button class="big-btn" onclick="searchByGenre(16)">🎨 アニメ</button>
+      </div>
+    </section>
 
-  <h2>😊 気分で探す</h2>
-  <button class="big-btn">😭 泣きたい</button>
-  <button class="big-btn">🤣 笑いたい</button>
-  <button class="big-btn">😱 ドキドキ</button>
-  <button class="big-btn">🤩 ワクワク</button>
+    <section>
+      <h2>😊 気分で探す</h2>
+      <div class="button-group">
+        <button class="big-btn" onclick="searchKeyword('泣ける')">😭 泣きたい</button>
+        <button class="big-btn" onclick="searchKeyword('コメディ')">🤣 笑いたい</button>
+        <button class="big-btn" onclick="searchKeyword('サスペンス')">😱 ドキドキ</button>
+        <button class="big-btn" onclick="searchKeyword('冒険')">🤩 ワクワク</button>
+      </div>
+    </section>
 
-  <h2>🔥 今週の人気映画</h2>
-  <button class="big-btn">ランキングを見る</button>
+    <section>
+      <h2>🔥 今週の人気映画</h2>
+      <button class="big-btn" onclick="fetchTrending()">ランキングを見る</button>
+    </section>
 
-  <h2>🔎 検索結果 / お気に入り</h2>
-  <div id="results"></div>
+    <section>
+      <h2>🔍 検索結果 / お気に入り</h2>
+      <div id="results" class="results-grid"></div>
+    </section>
+  </main>
 
-  <script>
-    const apiKey = "aed5acb88a9374b39d1662a6f4eb4c8f"; // APIキー
+  <footer>
+    <p>This product uses the TMDb API but is not endorsed or certified by TMDb.</p>
+  </footer>
 
-    // デバッグログ出力
-    function logDebug(message) {
-      const resultsDiv = document.getElementById("results");
-      const log = document.createElement("p");
-      log.style.color = "red";
-      log.textContent = "🔍 Debug: " + message;
-      resultsDiv.appendChild(log);
-    }
-
-    // 検索イベント
-    document.getElementById("searchForm").addEventListener("submit", function(event) {
-      event.preventDefault();
-      const query = document.getElementById("searchInput").value.trim();
-      if (query) searchMovies(query);
-    });
-
-    // 映画検索
-    function searchMovies(query) {
-      fetch(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=ja&query=${encodeURIComponent(query)}`)
-        .then(res => res.json())
-        .then(data => {
-          logDebug("検索成功: " + (data.results ? data.results.length : 0) + "件ヒット");
-          displayResults(data.results);
-        })
-        .catch(err => logDebug("検索エラー: " + err));
-    }
-
-    // 検索結果を表示
-    function displayResults(results) {
-      const resultsDiv = document.getElementById("results");
-      resultsDiv.innerHTML = "";
-      if (!results || results.length === 0) {
-        resultsDiv.innerHTML = "<p>該当する映画が見つかりませんでした。</p>";
-        return;
-      }
-      results.forEach(movie => {
-        const div = document.createElement("div");
-        div.innerHTML = `
-          <h3>${movie.title}</h3>
-          <img src="https://image.tmdb.org/t/p/w200${movie.poster_path}" alt="${movie.title}">
-          <p>${movie.release_date || "公開日不明"}</p>
-        `;
-        resultsDiv.appendChild(div);
-      });
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
