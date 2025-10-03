@@ -136,7 +136,10 @@
 
     // 映画検索
     function searchMovies(query) {
-  const API_KEY = "YOUR_API_KEY"; // ←ここに本物のキーを
+  const API_KEY = "aed5acb88a9374b39d1662a6f4eb4c8f";
+
+// 映画検索
+function searchMovies(query) {
   fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=ja&query=${encodeURIComponent(query)}`)
     .then(res => res.json())
     .then(data => {
