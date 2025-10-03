@@ -83,7 +83,7 @@
       color: #666;
     }
 
-    .genre-buttons button {
+    .genre-buttons button, .mood-buttons button {
       margin: 5px;
     }
   </style>
@@ -103,6 +103,14 @@
     <button onclick="searchByGenre(35)">😂 コメディ</button>
     <button onclick="searchByGenre(10749)">💖 恋愛</button>
     <button onclick="searchByGenre(16)">🎨 アニメ</button>
+  </div>
+
+  <h2 style="text-align:center; margin-top:30px;">😊 気分で探す</h2>
+  <div class="mood-buttons" style="text-align:center; margin-bottom:20px;">
+    <button onclick="searchByMood('泣きたい')">😭 泣きたい</button>
+    <button onclick="searchByMood('笑いたい')">😂 笑いたい</button>
+    <button onclick="searchByMood('ドキドキ')">😱 ドキドキ</button>
+    <button onclick="searchByMood('ワクワク')">🤩 ワクワク</button>
   </div>
 
   <h2 style="text-align:center; margin-top:30px;">🔥 今週の人気映画</h2>
@@ -205,6 +213,21 @@
       const res = await fetch(url);
       const data = await res.json();
       displayMovies(data.results);
+    }
+
+    async function searchByMood(mood) {
+      const url = `https://api.themoviedb.org/3/search/keyword?api_key=${API_KEY}&query=${encodeURIComponent(mood)}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      if (data.results.length > 0) {
+        const keywordId = data.results[0].id;
+        const movieUrl = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_keywords=${keywordId}&language=ja&sort_by=popularity.desc`;
+        const movieRes = await fetch(movieUrl);
+        const movieData = await movieRes.json();
+        displayMovies(movieData.results);
+      } else {
+        document.getElementById("results").innerHTML = `<p>${mood} 気分の映画は見つかりませんでした。</p>`;
+      }
     }
 
     window.onload = () => {
