@@ -116,7 +116,7 @@
   <h2 style="text-align:center; margin-top:30px;">🔥 今週の人気映画</h2>
   <div id="trending"></div>
 
-  <h2 style="text-align:center; margin-top:30px;">🔍 検索結果</h2>
+  <h2 style="text-align:center; margin-top:30px;">🔍 検索結果 / お気に入り</h2>
   <div id="results"></div>
 
   <footer>
@@ -160,6 +160,7 @@
             <h3>${movie.title} (${movie.release_date ? movie.release_date.substring(0,4) : "年不明"})</h3>
             <p>${movie.overview ? movie.overview.substring(0, 80) + "..." : "説明なし"}</p>
             <button onclick="addFavorite(${movie.id}, '${movie.title}')">お気に入りに追加</button>
+            <button onclick="removeFavorite(${movie.id})">削除</button>
           </div>
         `;
         resultsDiv.appendChild(div);
@@ -176,8 +177,27 @@
       }
     }
 
-    function showFavorites() {
-      displayMovies(favorites.map(f => ({ id: f.id, title: f.title, poster_path: null, overview: "" })));
+    async function showFavorites() {
+      if (favorites.length === 0) {
+        document.getElementById("results").innerHTML = "<p>お気に入りがまだありません。</p>";
+        return;
+      }
+
+      const movieDetails = [];
+      for (const fav of favorites) {
+        const url = `https://api.themoviedb.org/3/movie/${fav.id}?api_key=${API_KEY}&language=ja`;
+        const res = await fetch(url);
+        const data = await res.json();
+        movieDetails.push(data);
+      }
+
+      displayMovies(movieDetails);
+    }
+
+    function removeFavorite(id) {
+      favorites = favorites.filter(f => f.id !== id);
+      localStorage.setItem("favorites", JSON.stringify(favorites));
+      showFavorites();
     }
 
     async function loadTrending() {
