@@ -55,9 +55,15 @@ section {
 
 .results-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  grid-template-columns: repeat(2, 1fr); /* 2列表示 */
   gap: 16px;
   padding: 20px;
+}
+
+@media (min-width: 768px) {
+  .results-grid {
+    grid-template-columns: repeat(3, 1fr); /* タブレット以上は3列 */
+  }
 }
 
 .card {
