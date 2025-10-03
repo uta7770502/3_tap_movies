@@ -66,6 +66,7 @@ section {
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
   padding: 10px;
   text-align: center;
+  cursor: pointer;
 }
 
 .card img {
@@ -91,5 +92,34 @@ section {
   background: #ff7e5f;
   color: white;
   font-weight: bold;
+  cursor: pointer;
+}
+
+/* モーダル */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 600px;
+  margin: auto;
+  text-align: left;
+}
+
+.close {
+  float: right;
+  font-size: 24px;
   cursor: pointer;
 }

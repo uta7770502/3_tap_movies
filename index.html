@@ -16,10 +16,11 @@
     <button class="big-btn" onclick="showFavorites()">⭐ お気に入りリスト</button>
   </header>
 
-  <!-- 🔍 検索結果をお気に入りリストボタンの直下に移動 -->
+  <!-- 🔍 検索結果 / お気に入り -->
   <section>
     <h2>🔍 検索結果 / お気に入り</h2>
     <div id="results" class="results-grid"></div>
+    <button id="loadMoreBtn" class="big-btn" style="display:none;" onclick="loadMore()">もっと見る</button>
   </section>
 
   <main>
@@ -48,6 +49,14 @@
       <button class="big-btn" onclick="fetchTrending()">ランキングを見る</button>
     </section>
   </main>
+
+  <!-- モーダル -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <div id="modal-body"></div>
+    </div>
+  </div>
 
   <footer>
     <p>This product uses the TMDb API but is not endorsed or certified by TMDb.</p>
