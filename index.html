@@ -2,81 +2,78 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>3タップムービー</title>
+  <title>🎬 3タップムービー</title>
   <style>
     body {
       font-family: sans-serif;
       margin: 0;
       padding: 0;
-      background: #fff;
+      text-align: center;
     }
     h1 {
-      font-size: 28px;
-      font-weight: bold;
       margin: 20px 0;
-      color: #333;
-      text-align: center;
     }
-    /* カード型大ボタン */
-    .big-button {
+    input {
+      width: 90%;
+      padding: 12px;
+      margin: 10px auto;
+      border: 1px solid #ccc;
+      border-radius: 8px;
       display: block;
-      width: 100%;
-      max-width: 400px;
-      margin: 15px auto;
-      padding: 18px;
+      font-size: 16px;
+    }
+    .btn {
+      display: block;
+      width: 95%;
+      max-width: 600px;
+      margin: 12px auto;
+      padding: 20px;
       font-size: 20px;
-      text-align: center;
-      background: linear-gradient(45deg, #ff7e5f, #feb47b);
+      font-weight: bold;
       color: white;
+      background: linear-gradient(45deg, #ff7e5f, #feb47b);
       border: none;
-      border-radius: 16px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      border-radius: 15px;
       cursor: pointer;
-      transition: 0.2s;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
     }
-    .big-button:hover {
-      transform: scale(1.05);
-    }
-    /* セクション */
-    h2 {
-      margin-top: 30px;
-      color: #333;
-      text-align: center;
-    }
-    .section {
-      text-align: center;
-      margin: 20px 0;
+    section {
+      margin: 30px 0;
     }
   </style>
 </head>
 <body>
   <h1>🎬 3タップムービー</h1>
+  <input type="text" placeholder="映画タイトルや俳優名で検索">
+  <button class="btn">検索</button>
+  <button class="btn">⭐ お気に入りリスト</button>
 
-  <div class="section">
-    <input id="searchInput" type="text" placeholder="映画タイトルや俳優名で検索">
-    <button class="big-button" onclick="searchMovies()">検索</button>
-    <button class="big-button" onclick="showFavorites()">⭐ お気に入りリスト</button>
-  </div>
-
-  <div class="section">
+  <section>
     <h2>🎭 ジャンルから探す</h2>
-    <button class="big-button">💥 アクション</button>
-    <button class="big-button">😂 コメディ</button>
-    <button class="big-button">💖 恋愛</button>
-    <button class="big-button">🎨 アニメ</button>
-  </div>
+    <button class="btn">💥 アクション</button>
+    <button class="btn">😂 コメディ</button>
+    <button class="btn">💖 恋愛</button>
+    <button class="btn">🎨 アニメ</button>
+  </section>
 
-  <div class="section">
+  <section>
     <h2>😊 気分で探す</h2>
-    <button class="big-button">😭 泣きたい</button>
-    <button class="big-button">🤣 笑いたい</button>
-    <button class="big-button">😱 ドキドキ</button>
-    <button class="big-button">🤩 ワクワク</button>
-  </div>
+    <button class="btn">😭 泣きたい</button>
+    <button class="btn">🤣 笑いたい</button>
+    <button class="btn">😱 ドキドキ</button>
+    <button class="btn">🤩 ワクワク</button>
+  </section>
 
-  <div class="section">
+  <section>
     <h2>🔥 今週の人気映画</h2>
-    <button class="big-button">ランキングを見る</button>
-  </div>
+    <button class="btn">ランキングを見る</button>
+  </section>
+
+  <footer>
+    <h2>🔍 検索結果 / お気に入り</h2>
+    <p style="font-size: 12px; color: #555;">
+      This product uses the TMDb API but is not endorsed or certified by TMDb.
+    </p>
+  </footer>
 </body>
 </html>
