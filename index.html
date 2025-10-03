@@ -58,6 +58,17 @@
       max-width: 400px;
       border-bottom: 1px solid #ddd;
     }
+    #debug {
+      color: red;
+      font-size: 12px;
+      margin: 20px;
+      text-align: left;
+      border: 1px dashed #f00;
+      padding: 10px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
   </style>
 </head>
 <body>
@@ -99,12 +110,22 @@
     <div id="results"></div>
   </section>
 
+  <!-- デバッグ表示欄 -->
+  <div id="debug">🔎 Debug Log:</div>
+
   <footer style="margin: 30px; font-size: 12px; color: #666;">
     This product uses the TMDb API but is not endorsed or certified by TMDb.
   </footer>
 
   <script>
     const API_KEY = "YOUR_TMDB_API_KEY"; // ← 自分のAPIキーを入れてください
+
+    // デバッグ出力関数
+    const debug = document.getElementById("debug");
+    function logDebug(msg) {
+      console.log(msg);
+      debug.innerHTML += `<div>${msg}</div>`;
+    }
 
     // 検索フォーム送信イベント
     document.getElementById("searchForm").addEventListener("submit", function(event) {
@@ -117,16 +138,22 @@
     function searchMovies(query) {
       fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=ja&query=${encodeURIComponent(query)}`)
         .then(res => res.json())
-        .then(data => displayResults(data.results))
-        .catch(err => console.error(err));
+        .then(data => {
+          logDebug("検索成功: " + (data.results ? data.results.length : 0) + "件ヒット");
+          displayResults(data.results);
+        })
+        .catch(err => logDebug("検索エラー: " + err));
     }
 
     // ジャンル検索
     function searchByGenre(genreId) {
       fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=ja&with_genres=${genreId}`)
         .then(res => res.json())
-        .then(data => displayResults(data.results))
-        .catch(err => console.error(err));
+        .then(data => {
+          logDebug("ジャンル検索成功: " + (data.results ? data.results.length : 0) + "件ヒット");
+          displayResults(data.results);
+        })
+        .catch(err => logDebug("ジャンル検索エラー: " + err));
     }
 
     // 気分検索
@@ -142,8 +169,11 @@
     function showTrending() {
       fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${API_KEY}&language=ja`)
         .then(res => res.json())
-        .then(data => displayResults(data.results))
-        .catch(err => console.error(err));
+        .then(data => {
+          logDebug("トレンド取得成功: " + (data.results ? data.results.length : 0) + "件ヒット");
+          displayResults(data.results);
+        })
+        .catch(err => logDebug("トレンド取得エラー: " + err));
     }
 
     // 結果表示
@@ -169,6 +199,7 @@
 
     // お気に入り（仮）
     function showFavorites() {
+      logDebug("お気に入りリストは準備中です！");
       alert("お気に入りリスト機能は準備中です！");
     }
   </script>
