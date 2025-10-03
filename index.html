@@ -148,7 +148,6 @@ function searchMovies(query) {
     })
     .catch(err => logDebug("検索エラー: " + err));
 }
-
     // ジャンル検索
     function searchByGenre(genreId) {
       fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=ja&with_genres=${genreId}`)
