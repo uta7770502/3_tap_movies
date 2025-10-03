@@ -40,11 +40,12 @@
     }
 
     .hero-overlay h1 {
-      font-size: 22px;
-      margin-bottom: 15px;
+      margin: 0;
+      font-size: 24px;
     }
 
     .search-container-hero {
+      margin-top: 15px;
       display: flex;
       justify-content: center;
       gap: 10px;
@@ -65,9 +66,14 @@
       border-radius: 8px;
       font-size: 14px;
       cursor: pointer;
+      transition: opacity 0.3s;
     }
 
-    /* 検索エリア（下部のメイン検索） */
+    .search-container-hero button:hover {
+      opacity: 0.8;
+    }
+
+    /* 検索エリア */
     .search-container {
       display: flex;
       justify-content: center;
@@ -133,6 +139,35 @@
     .genre-buttons button, .mood-buttons button {
       margin: 5px;
     }
+
+    /* レスポンシブ対応 */
+    @media (max-width: 600px) {
+      .search-container, .search-container-hero {
+        flex-direction: column;
+        gap: 8px;
+      }
+      .search-container input, .search-container-hero input {
+        width: 100%;
+      }
+      .movie {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .movie img {
+        width: 80%;
+        max-width: 200px;
+      }
+      .genre-buttons, .mood-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .genre-buttons button, .mood-buttons button {
+        flex: 1 1 45%;
+        margin: 5px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -194,12 +229,6 @@
       const res = await fetch(url);
       const data = await res.json();
       displayMovies(data.results);
-    }
-
-    function searchMoviesFromHero() {
-      const query = document.getElementById("searchInputHero").value;
-      document.getElementById("searchInput").value = query;
-      searchMovies();
     }
 
     function displayMovies(movies) {
@@ -326,9 +355,15 @@
       }
     }
 
+    function searchMoviesFromHero() {
+      const query = document.getElementById("searchInputHero").value;
+      document.getElementById("searchInput").value = query;
+      searchMovies();
+    }
+
     window.onload = () => {
-      loadTrending();
       loadHeroBackground();
+      loadTrending();
     };
   </script>
 </body>
