@@ -6,7 +6,7 @@
   <title>🎬 3タップムービー</title>
   <style>
     body {
-      font-family: "Arial", sans-serif;
+      font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
       text-align: center;
@@ -15,14 +15,17 @@
     h1 {
       margin: 20px 0;
     }
+    .search-box {
+      margin: 20px auto;
+      padding: 10px;
+      max-width: 90%;
+    }
     input[type="text"] {
       width: 80%;
-      max-width: 400px;
       padding: 12px;
       font-size: 16px;
+      border-radius: 8px;
       border: 1px solid #ccc;
-      border-radius: 6px;
-      margin-bottom: 10px;
     }
     .big-btn {
       display: block;
@@ -38,96 +41,61 @@
       border: none;
       box-shadow: 0 4px 8px rgba(0,0,0,0.2);
       cursor: pointer;
-      transition: transform 0.1s ease-in-out;
+      transition: transform 0.1s ease;
     }
     .big-btn:hover {
       transform: scale(1.02);
     }
-    section {
-      margin: 30px 0;
+    #results {
+      margin: 20px;
     }
     #results img {
       width: 100px;
       border-radius: 8px;
       display: block;
-      margin: 5px auto;
-    }
-    #results div {
-      margin: 15px auto;
-      padding: 10px;
-      max-width: 400px;
-      border-bottom: 1px solid #ddd;
-    }
-    #debug {
-      color: red;
-      font-size: 12px;
-      margin: 20px;
-      text-align: left;
-      border: 1px dashed #f00;
-      padding: 10px;
-      max-width: 500px;
-      margin-left: auto;
-      margin-right: auto;
+      margin: 10px auto;
     }
   </style>
 </head>
 <body>
-
   <h1>🎬 3タップムービー</h1>
-
-  <!-- 検索フォーム -->
-  <form id="searchForm">
+  <form id="searchForm" class="search-box">
     <input type="text" id="searchInput" placeholder="映画タイトルや俳優名で検索">
     <button type="submit" class="big-btn">検索</button>
   </form>
+  <button class="big-btn">⭐ お気に入りリスト</button>
 
-  <!-- お気に入りリスト -->
-  <button class="big-btn" onclick="showFavorites()">⭐ お気に入りリスト</button>
+  <h2>🎭 ジャンルから探す</h2>
+  <button class="big-btn">💥 アクション</button>
+  <button class="big-btn">😂 コメディ</button>
+  <button class="big-btn">💖 恋愛</button>
+  <button class="big-btn">🎨 アニメ</button>
 
-  <section>
-    <h2>🎭 ジャンルから探す</h2>
-    <button class="big-btn" onclick="searchByGenre(28)">💥 アクション</button>
-    <button class="big-btn" onclick="searchByGenre(35)">😂 コメディ</button>
-    <button class="big-btn" onclick="searchByGenre(10749)">💖 恋愛</button>
-    <button class="big-btn" onclick="searchByGenre(16)">🎨 アニメ</button>
-  </section>
+  <h2>😊 気分で探す</h2>
+  <button class="big-btn">😭 泣きたい</button>
+  <button class="big-btn">🤣 笑いたい</button>
+  <button class="big-btn">😱 ドキドキ</button>
+  <button class="big-btn">🤩 ワクワク</button>
 
-  <section>
-    <h2>😊 気分で探す</h2>
-    <button class="big-btn" onclick="searchByMood('drama')">😭 泣きたい</button>
-    <button class="big-btn" onclick="searchByMood('comedy')">🤣 笑いたい</button>
-    <button class="big-btn" onclick="searchByMood('thriller')">😱 ドキドキ</button>
-    <button class="big-btn" onclick="searchByMood('adventure')">🤩 ワクワク</button>
-  </section>
+  <h2>🔥 今週の人気映画</h2>
+  <button class="big-btn">ランキングを見る</button>
 
-  <section>
-    <h2>🔥 今週の人気映画</h2>
-    <button class="big-btn" onclick="showTrending()">ランキングを見る</button>
-  </section>
-
-  <section>
-    <h2>🔍 検索結果 / お気に入り</h2>
-    <div id="results"></div>
-  </section>
-
-  <!-- デバッグ表示欄 -->
-  <div id="debug">🔎 Debug Log:</div>
-
-  <footer style="margin: 30px; font-size: 12px; color: #666;">
-    This product uses the TMDb API but is not endorsed or certified by TMDb.
-  </footer>
+  <h2>🔎 検索結果 / お気に入り</h2>
+  <div id="results"></div>
 
   <script>
-    const API_KEY = "YOUR_TMDB_API_KEY"; // ← 自分のAPIキーを入れてください
+    const apiKey = "aed5acb88a9374b39d1662a6f4eb4c8f"; // APIキー
 
-    // デバッグ出力関数
-    const debug = document.getElementById("debug");
-    function logDebug(msg) {
-      console.log(msg);
-      debug.innerHTML += `<div>${msg}</div>`;
+    // デバッグログ出力
+    function logDebug(message) {
+      const resultsDiv = document.getElementById("results");
+      const log = document.createElement("p");
+      log.style.color = "red";
+      log.textContent = "🔍 Debug: " + message;
+      resultsDiv.appendChild(log);
     }
 
-    // 検索フォーム送信イベント
+    // 検索イベント
     document.getElementById("searchForm").addEventListener("submit", function(event) {
       event.preventDefault();
       const query = document.getElementById("searchInput").value.trim();
@@ -136,74 +104,32 @@
 
     // 映画検索
     function searchMovies(query) {
-  const API_KEY = "aed5acb88a9374b39d1662a6f4eb4c8f";
-
-// 映画検索
-function searchMovies(query) {
-  fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=ja&query=${encodeURIComponent(query)}`)
-    .then(res => res.json())
-    .then(data => {
-      logDebug("検索成功: " + (data.results ? data.results.length : 0) + "件ヒット");
-      displayResults(data.results);
-    })
-    .catch(err => logDebug("検索エラー: " + err));
-}
-    // ジャンル検索
-    function searchByGenre(genreId) {
-      fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=ja&with_genres=${genreId}`)
+      fetch(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=ja&query=${encodeURIComponent(query)}`)
         .then(res => res.json())
         .then(data => {
-          logDebug("ジャンル検索成功: " + (data.results ? data.results.length : 0) + "件ヒット");
+          logDebug("検索成功: " + (data.results ? data.results.length : 0) + "件ヒット");
           displayResults(data.results);
         })
-        .catch(err => logDebug("ジャンル検索エラー: " + err));
+        .catch(err => logDebug("検索エラー: " + err));
     }
 
-    // 気分検索
-    function searchByMood(mood) {
-      let genreId = 18; // デフォルト:ドラマ
-      if (mood === "comedy") genreId = 35;
-      if (mood === "thriller") genreId = 53;
-      if (mood === "adventure") genreId = 12;
-      searchByGenre(genreId);
-    }
-
-    // 人気映画
-    function showTrending() {
-      fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${API_KEY}&language=ja`)
-        .then(res => res.json())
-        .then(data => {
-          logDebug("トレンド取得成功: " + (data.results ? data.results.length : 0) + "件ヒット");
-          displayResults(data.results);
-        })
-        .catch(err => logDebug("トレンド取得エラー: " + err));
-    }
-
-    // 結果表示
-    function displayResults(movies) {
-      const results = document.getElementById("results");
-      results.innerHTML = "";
-      if (!movies || movies.length === 0) {
-        results.innerHTML = "<p>該当する映画が見つかりませんでした。</p>";
+    // 検索結果を表示
+    function displayResults(results) {
+      const resultsDiv = document.getElementById("results");
+      resultsDiv.innerHTML = "";
+      if (!results || results.length === 0) {
+        resultsDiv.innerHTML = "<p>該当する映画が見つかりませんでした。</p>";
         return;
       }
-      movies.forEach(movie => {
+      results.forEach(movie => {
         const div = document.createElement("div");
-        const poster = movie.poster_path ? 
-          `https://image.tmdb.org/t/p/w200${movie.poster_path}` :
-          "https://via.placeholder.com/100x150?text=No+Image";
         div.innerHTML = `
-          <img src="${poster}" alt="${movie.title}">
-          <strong>${movie.title}</strong> (${movie.release_date ? movie.release_date.substring(0,4) : "N/A"})
+          <h3>${movie.title}</h3>
+          <img src="https://image.tmdb.org/t/p/w200${movie.poster_path}" alt="${movie.title}">
+          <p>${movie.release_date || "公開日不明"}</p>
         `;
-        results.appendChild(div);
+        resultsDiv.appendChild(div);
       });
-    }
-
-    // お気に入り（仮）
-    function showFavorites() {
-      logDebug("お気に入りリストは準備中です！");
-      alert("お気に入りリスト機能は準備中です！");
     }
   </script>
 </body>
