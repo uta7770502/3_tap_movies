@@ -20,7 +20,54 @@
       font-weight: bold;
     }
 
-    /* 検索エリア */
+    /* ヒーローバナー */
+    .hero {
+      position: relative;
+      height: 300px;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-overlay {
+      background: rgba(0,0,0,0.5);
+      color: white;
+      text-align: center;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .hero-overlay h1 {
+      font-size: 22px;
+      margin-bottom: 15px;
+    }
+
+    .search-container-hero {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .search-container-hero input {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      width: 250px;
+    }
+
+    .search-container-hero button {
+      background: linear-gradient(90deg, #ff7e5f, #feb47b);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* 検索エリア（下部のメイン検索） */
     .search-container {
       display: flex;
       justify-content: center;
@@ -91,6 +138,16 @@
 <body>
   <header>🎬 映画検索 MVP</header>
 
+  <div class="hero">
+    <div class="hero-overlay">
+      <h1>あなたにぴったりの映画を探そう 🎬</h1>
+      <div class="search-container-hero">
+        <input id="searchInputHero" type="text" placeholder="映画タイトルや俳優名で検索">
+        <button onclick="searchMoviesFromHero()">検索</button>
+      </div>
+    </div>
+  </div>
+
   <div class="search-container">
     <input id="searchInput" type="text" placeholder="映画タイトルや俳優名で検索">
     <button onclick="searchMovies()">検索</button>
@@ -137,6 +194,12 @@
       const res = await fetch(url);
       const data = await res.json();
       displayMovies(data.results);
+    }
+
+    function searchMoviesFromHero() {
+      const query = document.getElementById("searchInputHero").value;
+      document.getElementById("searchInput").value = query;
+      searchMovies();
     }
 
     function displayMovies(movies) {
@@ -250,8 +313,22 @@
       }
     }
 
+    async function loadHeroBackground() {
+      const url = `https://api.themoviedb.org/3/trending/movie/week?api_key=${API_KEY}&language=ja`;
+      const res = await fetch(url);
+      const data = await res.json();
+      if (data.results.length > 0) {
+        const randomMovie = data.results[Math.floor(Math.random() * data.results.length)];
+        if (randomMovie.backdrop_path) {
+          document.querySelector(".hero").style.backgroundImage =
+            `url(https://image.tmdb.org/t/p/original${randomMovie.backdrop_path})`;
+        }
+      }
+    }
+
     window.onload = () => {
       loadTrending();
+      loadHeroBackground();
     };
   </script>
 </body>
