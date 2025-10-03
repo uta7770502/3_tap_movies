@@ -3,49 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🎬 3タップムービー</title>
+  <title>3タップムービー</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <h1>🎬 3タップムービー</h1>
+    <h1>3タップムービー</h1>
     <form id="searchForm">
       <input type="text" id="searchInput" placeholder="映画タイトルや俳優名で検索">
       <button type="submit" class="big-btn">検索</button>
     </form>
-    <button class="big-btn" onclick="showFavorites()">⭐ お気に入りリスト</button>
+    <button class="big-btn" onclick="showFavorites()">お気に入りリスト</button>
   </header>
 
   <!-- 🔍 検索結果 / お気に入り -->
   <section>
-    <h2>🔍 検索結果 / お気に入り</h2>
+    <h2>検索結果 / お気に入り</h2>
     <div id="results" class="results-grid"></div>
     <button id="loadMoreBtn" class="big-btn" style="display:none;" onclick="loadMore()">もっと見る</button>
   </section>
 
   <main>
     <section>
-      <h2>🎭 ジャンルから探す</h2>
+      <h2>ジャンルから探す</h2>
       <div class="button-group">
-        <button class="big-btn" onclick="searchByGenre(28)">💥 アクション</button>
-        <button class="big-btn" onclick="searchByGenre(35)">😂 コメディ</button>
-        <button class="big-btn" onclick="searchByGenre(10749)">💖 恋愛</button>
-        <button class="big-btn" onclick="searchByGenre(16)">🎨 アニメ</button>
+        <button class="big-btn" onclick="searchByGenre(28)">アクション</button>
+        <button class="big-btn" onclick="searchByGenre(35)">コメディ</button>
+        <button class="big-btn" onclick="searchByGenre(10749)">恋愛</button>
+        <button class="big-btn" onclick="searchByGenre(16)">アニメ</button>
       </div>
     </section>
 
     <section>
-      <h2>😊 気分で探す</h2>
+      <h2>気分で探す</h2>
       <div class="button-group">
-        <button class="big-btn" onclick="searchKeyword('泣ける')">😭 泣きたい</button>
-        <button class="big-btn" onclick="searchKeyword('コメディ')">🤣 笑いたい</button>
-        <button class="big-btn" onclick="searchKeyword('サスペンス')">😱 ドキドキ</button>
-        <button class="big-btn" onclick="searchKeyword('冒険')">🤩 ワクワク</button>
+        <button class="big-btn" onclick="searchKeyword('泣ける')">泣きたい</button>
+        <button class="big-btn" onclick="searchKeyword('コメディ')">笑いたい</button>
+        <button class="big-btn" onclick="searchKeyword('サスペンス')">ドキドキ</button>
+        <button class="big-btn" onclick="searchKeyword('冒険')">ワクワク</button>
       </div>
     </section>
 
     <section>
-      <h2>🔥 今週の人気映画</h2>
+      <h2>今週の人気映画</h2>
       <button class="big-btn" onclick="fetchTrending()">ランキングを見る</button>
     </section>
   </main>

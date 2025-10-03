@@ -78,8 +78,8 @@ function displayResults(movies, append = false) {
       <p>⭐ ${movie.vote_average || "N/A"}</p>
       <p>${overview}</p>
       ${currentMode === "favorites" 
-        ? `<button onclick="event.stopPropagation(); removeFromFavorites(${movie.id})">❌ 削除</button>`
-        : `<button onclick="event.stopPropagation(); addToFavorites(${movie.id}, '${movie.title.replace(/'/g, "\'")}', '${poster}')">⭐ お気に入り</button>`}
+        ? `<button onclick="event.stopPropagation(); removeFromFavorites(${movie.id})">削除</button>`
+        : `<button onclick="event.stopPropagation(); addToFavorites(${movie.id}, '${movie.title.replace(/'/g, "\'")}', '${poster}')">お気に入り</button>`}
     `;
     results.appendChild(card);
   });
