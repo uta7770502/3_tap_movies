@@ -16,6 +16,12 @@
     <button class="big-btn" onclick="showFavorites()">⭐ お気に入りリスト</button>
   </header>
 
+  <!-- 🔍 検索結果をお気に入りリストボタンの直下に移動 -->
+  <section>
+    <h2>🔍 検索結果 / お気に入り</h2>
+    <div id="results" class="results-grid"></div>
+  </section>
+
   <main>
     <section>
       <h2>🎭 ジャンルから探す</h2>
@@ -40,11 +46,6 @@
     <section>
       <h2>🔥 今週の人気映画</h2>
       <button class="big-btn" onclick="fetchTrending()">ランキングを見る</button>
-    </section>
-
-    <section>
-      <h2>🔍 検索結果 / お気に入り</h2>
-      <div id="results" class="results-grid"></div>
     </section>
   </main>
 

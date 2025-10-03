@@ -49,7 +49,7 @@ function displayResults(movies) {
       : "https://via.placeholder.com/300x450?text=No+Image";
 
     const overview = movie.overview
-      ? movie.overview.slice(0, 100) + (movie.overview.length > 100 ? "..." : "")
+      ? movie.overview.slice(0, 100) + (movie.overview.length > 100 ? "...": "")
       : "説明はありません。";
 
     card.innerHTML = `
@@ -58,7 +58,24 @@ function displayResults(movies) {
       <p>公開日: ${movie.release_date || "不明"}</p>
       <p>⭐ ${movie.vote_average || "N/A"}</p>
       <p>${overview}</p>
+      <button onclick="addToFavorites(${movie.id}, '${movie.title.replace(/'/g, "\'")}', '${poster}')">⭐ お気に入り</button>
     `;
     results.appendChild(card);
   });
+}
+
+function addToFavorites(id, title, poster) {
+  let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+  if (!favorites.some(m => m.id === id)) {
+    favorites.push({ id, title, poster });
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+    alert("お気に入りに追加しました！");
+  } else {
+    alert("すでにお気に入りに入っています");
+  }
+}
+
+function showFavorites() {
+  const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+  displayResults(favorites);
 }

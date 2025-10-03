@@ -82,3 +82,14 @@ section {
   font-size: 0.9em;
   color: #555;
 }
+
+.card button {
+  margin-top: 8px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background: #ff7e5f;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
