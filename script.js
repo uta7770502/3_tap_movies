@@ -1,5 +1,5 @@
 // 🎬 TMDb APIキーを必ず入力してください
-const apiKey = "YOUR_TMDB_API_KEY";
+const apiKey = "aed5acb88a9374b39d1662a6f4eb4c8f";
 
 let currentPage = 1;
 let currentQuery = "";
